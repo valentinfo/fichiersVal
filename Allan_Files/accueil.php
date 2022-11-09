@@ -50,8 +50,16 @@
                 }
             }
 
-            $sql= 'SELECT * FROM fiche WHERE CATEGORIEFICHE='.$CATEGORIEFICHE_value;
-            //$resultFICHE = $connect->query($sql);
+            $sql= 'SELECT * FROM fiche WHERE CATEGORIEFICHE=\''.$CATEGORIEFICHE_value.'\'';
+            try{
+                $resultFICHE = $connect->query($sql);
+                foreach ($resultFICHE as $row) {
+                    echo "[ ".$row["IDFICHE"] ." : ".$row["CATEGORIEFICHE"]." : ".$row["NOMFICHE"]." ]"."<br><br>";
+                }
+            }
+            catch (Exception $E){
+                // traitement des erreurs
+            }
     
         }
 
