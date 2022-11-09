@@ -1,57 +1,95 @@
-<?php
-extract($_POST);
-//if (empty($idCompte) && !isset($idCompte)){header("location:login.php")}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil</title>
 
-include("pdo.php");
-$connect = connect();
-?>
+    <?php
+        global $listCat;
+        global $totalCat;
 
-<?php //***************************************************** idCompte
-$sql = 'SELECT * FROM compte WHERE IDCOMPTE='.$idCompte;
-$result = $connect->query($sql);
-foreach ($result as $row) {
-    echo $row["LASTNAME"] ." ". $row["FIRSTNAME"]. "\n";
-}
-?>
+        print_r($_POST);
+    ?>
+    <?php
+        extract($_POST);
+        include("pdo.php");
+        $connect = connect();
+    ?>
+</head>
+<body>
+    <?php //***************************************************** idCompte
+        /*
+        $sql = 'SELECT * FROM compte WHERE IDCOMPTE='.$idCompte;
+        $result = $connect->query($sql);
+        foreach ($result as $row) {
+        echo $row["LASTNAME"] ." ". $row["FIRSTNAME"]. "<br><br>";
+        }*/
+    ?>
 
-<form action="accueil.php" method="POST">
+    <br><br>
+    ---------------------------------------------------------
+    <br><br>
 
-<?php //***************************************************** Categorie
-if (isset($haveCat)){
-    //echo "LISTE DES FICHES";
+    <form action="accueil.php" method="POST">
 
-    // Récupérer $listCat -> déconcaténer les éléments par un '.'
-    $param = "admin";
-
-    $+$param
-    $admin
-//*************** */
-
-}
-
-function insertCheck($var)
-{
-    echo "<label for='".$var."'>".$var."</label>";
-    echo "<input type='checkbox' id='".$var."' name='".$var."'  value='".$var."'>";
-}
-
-function addVal($var){$listCat = $listCat + $var}{
-
-}
+    <?php ////******** Début CHECKBOX
+        if(!isset($listCat)){$listCat = "";}
 
 
-$sql= 'SELECT * FROM categorie';
-$result = $connect->query($sql);
+        if (isset($haveCat))
+        {
+            $list = $GLOBALS['totalCat'];
+            $catArray = explode(".", $list);
 
-foreach ($result as $row) {
-    insertCheck($row["NOMCAT"]);
-    addVal(".".$row["NOMCAT"]);
-}
+            $CATEGORIEFICHE_value = "";
 
-//echo "<input type='checkbox' name=''>";
-?>
-<input type="hidden" name="idCompte" value = <?php echo $idCompte; ?>>
-<input type="hidden" name="haveCat" value = 1>
-<input type='hidden' name='listCat' value=<?php echo $listCat;?>>
-<button type='submit'> SEARCH </button>
-</form>
+            foreach ($catArray as $item) {
+                if(isset($$item))
+                {
+                    $CATEGORIEFICHE_value = $CATEGORIEFICHE_value . "." .$$item;
+                }
+            }
+
+            $sql= 'SELECT * FROM fiche WHERE CATEGORIEFICHE='.$CATEGORIEFICHE_value;
+            //$resultFICHE = $connect->query($sql);
+    
+        }
+
+        function insertCheck($var)
+        {
+            echo "<label for='".$var."'>".$var."</label>";
+            echo "<input type='checkbox' id='cat_".$var."' name='cat_".$var."'  value='".$var."'>";
+        }
+
+        function addCat($var)
+        {
+            $GLOBALS['listCat'] = $GLOBALS['listCat'].$var;
+            $GLOBALS['totalCat'] = $GLOBALS['listCat'];
+        }
+
+        $sql= 'SELECT * FROM categorie';
+        $resultCAT = $connect->query($sql);
+
+        foreach ($resultCAT as $row) {
+            insertCheck($row["NOMCAT"]);
+            addCat(".cat_".$row["NOMCAT"]);
+        }
+        //******** FIN CHECKBOX
+    ?>
+
+        <input type="hidden" name="idCompte" value = <?php echo $idCompte; ?>>
+        <input type="hidden" name="haveCat" value = 1>
+        <input type='hidden' name='totalCat' value=<?php echo $totalCat;?>>
+        <button type='submit'> SEARCH </button>
+    </form>
+
+    <br><br>
+    ---------------------------------------------------------
+    <br><br>
+
+
+</body>
+</html>
+
+
+
