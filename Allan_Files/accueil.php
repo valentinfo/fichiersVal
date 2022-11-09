@@ -7,8 +7,7 @@
     <?php
         global $listCat;
         global $totalCat;
-
-        print_r($_POST);
+        //print_r($_POST);
     ?>
     <?php
         extract($_POST);
@@ -17,30 +16,19 @@
     ?>
 </head>
 <body>
-    <?php //***************************************************** idCompte
-        /*
-        $sql = 'SELECT * FROM compte WHERE IDCOMPTE='.$idCompte;
-        $result = $connect->query($sql);
-        foreach ($result as $row) {
-        echo $row["LASTNAME"] ." ". $row["FIRSTNAME"]. "<br><br>";
-        }*/
-    ?>
-
     <br><br>
     ---------------------------------------------------------
     <br><br>
 
     <form action="accueil.php" method="POST">
 
-    <?php ////******** Début CHECKBOX
+    <?php //******** Début CHECKBOX
         if(!isset($listCat)){$listCat = "";}
-
 
         if (isset($haveCat))
         {
             $list = $GLOBALS['totalCat'];
             $catArray = explode(".", $list);
-
             $CATEGORIEFICHE_value = "";
 
             foreach ($catArray as $item) {
@@ -49,18 +37,19 @@
                     $CATEGORIEFICHE_value = $CATEGORIEFICHE_value . "." .$$item;
                 }
             }
-
             $sql= 'SELECT * FROM fiche WHERE CATEGORIEFICHE=\''.$CATEGORIEFICHE_value.'\'';
             try{
                 $resultFICHE = $connect->query($sql);
-                foreach ($resultFICHE as $row) {
-                    echo "[ ".$row["IDFICHE"] ." : ".$row["CATEGORIEFICHE"]." : ".$row["NOMFICHE"]." ]"."<br><br>";
+                
+                if (isset($resultFICHE))
+                {
+                    foreach ($resultFICHE as $row) {
+                        echo "[ ".$row["IDFICHE"] ." : ".$row["CATEGORIEFICHE"]." : ".$row["NOMFICHE"]." ]"."<br><br>";
+                    }
                 }
+                else{echo "[ AUCUN RESULTAT ! ]";}
             }
-            catch (Exception $E){
-                // traitement des erreurs
-            }
-    
+            catch (Exception $E){/**/}
         }
 
         function insertCheck($var)
@@ -77,14 +66,14 @@
 
         $sql= 'SELECT * FROM categorie';
         $resultCAT = $connect->query($sql);
-
+        echo "Choissez une ou plusieurs catégorie(s) : ";
         foreach ($resultCAT as $row) {
             insertCheck($row["NOMCAT"]);
             addCat(".cat_".$row["NOMCAT"]);
         }
         //******** FIN CHECKBOX
     ?>
-
+        <br>
         <input type="hidden" name="idCompte" value = <?php echo $idCompte; ?>>
         <input type="hidden" name="haveCat" value = 1>
         <input type='hidden' name='totalCat' value=<?php echo $totalCat;?>>
@@ -98,6 +87,3 @@
 
 </body>
 </html>
-
-
-
