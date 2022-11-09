@@ -11,7 +11,7 @@
     ?>
     <?php
         extract($_POST);
-        include("pdo.php");
+        include("bdd/pdo.php");
         $connect = connect();
     ?>
 </head>
