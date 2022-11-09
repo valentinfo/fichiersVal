@@ -25,7 +25,40 @@
     <?php //******** Début CHECKBOX
         if(!isset($listCat)){$listCat = "";}
 
-        if (isset($haveCat))
+        function insertCheck($var) // FONCTION D'AJOUT DES CHECKBOX
+        {
+            echo "<label for='".$var."'>".$var."</label>";
+            echo "<input type='checkbox' id='cat_".$var."' name='cat_".$var."'  value='".$var."'>";
+        }
+
+        function addCat($var) // tkt
+        {
+            $GLOBALS['listCat'] = $GLOBALS['listCat'].$var;
+            $GLOBALS['totalCat'] = $GLOBALS['listCat'];
+        }
+
+        $sql= 'SELECT * FROM categorie'; //AFFICHAGE DES CHECKBOX
+        $resultCAT = $connect->query($sql);
+        echo "Choissez une ou plusieurs catégorie(s) : ";
+        foreach ($resultCAT as $row) {
+            insertCheck($row["NOMCAT"]);
+            addCat(".cat_".$row["NOMCAT"]);
+        }
+        //******** FIN CHECKBOX
+    ?>
+        <br>
+        <input type="hidden" name="idCompte" value = <?php echo $idCompte; ?>>
+        <input type="hidden" name="haveCat" value = 1>
+        <input type='hidden' name='totalCat' value=<?php echo $totalCat;?>>
+        <button type='submit'> SEARCH </button>
+    </form>
+
+    <br><br>
+    ---------------------------------------------------------
+    <br><br>
+
+    <?php
+        if (isset($haveCat)) // AFFICHAGE DES FICHES
         {
             $list = $GLOBALS['totalCat'];
             $catArray = explode(".", $list);
@@ -51,39 +84,7 @@
             }
             catch (Exception $E){/**/}
         }
-
-        function insertCheck($var)
-        {
-            echo "<label for='".$var."'>".$var."</label>";
-            echo "<input type='checkbox' id='cat_".$var."' name='cat_".$var."'  value='".$var."'>";
-        }
-
-        function addCat($var)
-        {
-            $GLOBALS['listCat'] = $GLOBALS['listCat'].$var;
-            $GLOBALS['totalCat'] = $GLOBALS['listCat'];
-        }
-
-        $sql= 'SELECT * FROM categorie';
-        $resultCAT = $connect->query($sql);
-        echo "Choissez une ou plusieurs catégorie(s) : ";
-        foreach ($resultCAT as $row) {
-            insertCheck($row["NOMCAT"]);
-            addCat(".cat_".$row["NOMCAT"]);
-        }
-        //******** FIN CHECKBOX
     ?>
-        <br>
-        <input type="hidden" name="idCompte" value = <?php echo $idCompte; ?>>
-        <input type="hidden" name="haveCat" value = 1>
-        <input type='hidden' name='totalCat' value=<?php echo $totalCat;?>>
-        <button type='submit'> SEARCH </button>
-    </form>
-
-    <br><br>
-    ---------------------------------------------------------
-    <br><br>
-
 
 </body>
 </html>
