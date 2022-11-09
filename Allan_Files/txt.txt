@@ -1,0 +1,5 @@
+https://stackoverflow.com/questions/255312/how-to-get-a-variable-name-as-a-string-in-php
+
+https://www.php.net/get_defined_vars
+
+https://www.php.net/manual/fr/language.operators.comparison.php
