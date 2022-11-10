@@ -77,7 +77,12 @@
                 if (isset($resultFICHE))
                 {
                     foreach ($resultFICHE as $row) {
-                        echo "[ ".$row["IDFICHE"] ." : ".$row["CATEGORIEFICHE"]." : ".$row["NOMFICHE"]." ]"."<br><br>";
+                        echo "<form action='consult/fiche.php' method='POST'>";
+                        echo "[ ".$row["IDFICHE"] ." : ".$row["CATEGORIEFICHE"]." : ".$row["NOMFICHE"]." ]";
+                        echo "<input type='hidden' name='idCompte' value = ".$idCompte.";>";
+                        echo "<input type='hidden' name='idFiche' value = ".$row["IDFICHE"].";>";
+                        echo "<button type='submit'> -> </button>";
+                        echo "</form>"."<br><br>";
                     }
                 }
                 else{echo "[ AUCUN RESULTAT ! ]";}
